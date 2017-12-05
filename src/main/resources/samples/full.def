@@ -1,0 +1,40 @@
+package first
+
+/** This alias represents an alias of a string */
+type SimpleAliasType = String
+
+/**
+ * This type represents a simple type for example
+ */
+type SimpleDefinedType {
+  aliasString: SimpleAliasType
+  string: String
+}
+
+// Normal line comments are ignored
+type EmptyAliasType = String
+
+/*
+ * Normal block comments are ignored
+ */
+type EmptyDefinedType {
+  number: Number
+}
+
+/**
+ * This type is written using markdown.
+ * So you can use:
+ * - list
+ * - *italic*
+ * - **bold**
+ *
+ * A simple use of this type could be as follow:
+ * ```
+ * Some code here
+ * ```
+ *
+ * And of course, do any other thing you want!
+ *
+ * This project use [txtmark](https://github.com/rjeschke/txtmark) for markdown processing
+ */
+type MarkdownType = String
