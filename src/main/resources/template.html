@@ -7,14 +7,33 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Glossary</title>
   <style>
+    html, body {
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
     .row {
       display: flex;
     }
     .col, .col-fill {
-      padding: 15px;
+      margin: 0;
+      padding: 0;
     }
     .col-fill {
       flex-grow: 1;
+    }
+
+    .scrollable-col {
+      overflow-y: auto;
+      height: 100vh;
+    }
+    .scrollable-col > div {
+      padding: 10px;
+    }
+
+    .summary {
+      padding-right: 25px;
     }
   </style>
 </head>

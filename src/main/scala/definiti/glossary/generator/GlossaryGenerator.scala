@@ -22,7 +22,8 @@ class GlossaryGenerator {
   }
 
   private def generateSummary(glossary: Glossary): NodeSeq = {
-    <div class="col">
+    scrollableCol("col") {
+      <div class="summary">
         <h3>Types</h3>
         <ul>
           {glossary.types.map(generateTypeSummary)}
@@ -35,6 +36,7 @@ class GlossaryGenerator {
           {glossary.verifications.map(generateVerificationSummary)}
         </ul>
       </div>
+    }
   }
 
   private def generateTypeSummary(typeInfo: TypeInfo): NodeSeq = {
@@ -50,11 +52,13 @@ class GlossaryGenerator {
   }
 
   private def generateContent(glossary: Glossary): NodeSeq = {
-    <div class="col-fill">
-      {glossary.types.map(generateTypeContent)}
-      <hr/>
-      {glossary.verifications.map(generateVerificationContent)}
-    </div>
+    scrollableCol("col-fill") {
+      <div>
+        {glossary.types.map(generateTypeContent)}
+        <hr/>
+        {glossary.verifications.map(generateVerificationContent)}
+      </div>
+    }
   }
 
   private def generateTypeContent(typeInfo: TypeInfo): NodeSeq = {
@@ -74,6 +78,14 @@ class GlossaryGenerator {
       </blockquote>
 
       <div>{verificationInfo.content.map(beautifyContent).getOrElse(noContent)}</div>
+    </div>
+  }
+
+  private def scrollableCol(clazz: String)(content: => NodeSeq): NodeSeq = {
+    <div class={clazz}>
+      <div class="scrollable-col">
+        <div>{content}</div>
+      </div>
     </div>
   }
 
