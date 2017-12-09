@@ -1,11 +1,18 @@
 package definiti.glossary.generator
 
 import definiti.core.ast.{AliasType, DefinedType, Library}
-import definiti.glossary.model.TypeInfo
+import definiti.glossary.model.{Glossary, TypeInfo, VerificationInfo}
 import definiti.glossary.utils.StringUtils
 
 class GlossaryExtractor {
-  def extractGlossary(library: Library): Seq[TypeInfo] = {
+  def extractGlossary(library: Library): Glossary = {
+    Glossary(
+      types = extractTypes(library),
+      verifications = extractVerifications(library)
+    )
+  }
+
+  private def extractTypes(library: Library): Seq[TypeInfo] = {
     library.types.flatMap { case (fullName, typ) => typ match {
       case aliasType: AliasType =>
         Some(TypeInfo(
@@ -21,6 +28,17 @@ class GlossaryExtractor {
         ))
       case _ => None
     }}.toSeq
+  }
+
+  private def extractVerifications(library: Library): Seq[VerificationInfo] = {
+    library.verifications.map { case (fullName, verification) =>
+      VerificationInfo(
+        id = fullName,
+        name = verification.name,
+        message = verification.message,
+        content = verification.comment.map(normalizeComment)
+      )
+    }.toSeq
   }
 
   private def normalizeComment(comment: String): String = {

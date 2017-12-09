@@ -1,7 +1,7 @@
 package definiti.glossary.generator
 
 import com.github.rjeschke.txtmark.{Configuration, Processor}
-import definiti.glossary.model.TypeInfo
+import definiti.glossary.model.{Glossary, TypeInfo, VerificationInfo}
 
 import scala.xml.{NodeSeq, XML}
 
@@ -14,30 +14,66 @@ class GlossaryGenerator {
       .build()
   }
 
-  def generateGlossary(types: Seq[TypeInfo]): NodeSeq = {
+  def generateGlossary(glossary: Glossary): NodeSeq = {
     <div class="row">
-      <div class="col">
+      {generateSummary(glossary)}
+      {generateContent(glossary)}
+    </div>
+  }
+
+  private def generateSummary(glossary: Glossary): NodeSeq = {
+    <div class="col">
+        <h3>Types</h3>
         <ul>
-          {types.map(generateTypeSummary)}
+          {glossary.types.map(generateTypeSummary)}
+        </ul>
+
+        <hr/>
+
+        <h3>Verifications</h3>
+        <ul>
+          {glossary.verifications.map(generateVerificationSummary)}
         </ul>
       </div>
-      <div class="col-fill">
-        {types.map(generateTypeContent)}
-      </div>
-    </div>
   }
 
   private def generateTypeSummary(typeInfo: TypeInfo): NodeSeq = {
     <li>
-      <a href={s"#${typeInfo.id}"}>{typeInfo.name}</a>
+      <a href={s"#t-${typeInfo.id}"}>{typeInfo.name}</a>
     </li>
   }
 
+  private def generateVerificationSummary(verificationInfo: VerificationInfo): NodeSeq = {
+    <li>
+      <a href={s"#v-${verificationInfo.id}"}>{verificationInfo.name}</a>
+    </li>
+  }
+
+  private def generateContent(glossary: Glossary): NodeSeq = {
+    <div class="col-fill">
+      {glossary.types.map(generateTypeContent)}
+      <hr/>
+      {glossary.verifications.map(generateVerificationContent)}
+    </div>
+  }
+
   private def generateTypeContent(typeInfo: TypeInfo): NodeSeq = {
-    <div id={typeInfo.id}>
+    <div id={s"t-${typeInfo.id}"}>
       <h1>{typeInfo.name} <small><code>{typeInfo.id}</code></small></h1>
 
       <div>{typeInfo.content.map(beautifyContent).getOrElse(noContent)}</div>
+    </div>
+  }
+
+  private def generateVerificationContent(verificationInfo: VerificationInfo): NodeSeq = {
+    <div id={s"v-${verificationInfo.id}"}>
+      <h1>{verificationInfo.name} <small><code>{verificationInfo.id}</code></small></h1>
+
+      <blockquote>
+        <p>Default message: <code>{verificationInfo.message}</code></p>
+      </blockquote>
+
+      <div>{verificationInfo.content.map(beautifyContent).getOrElse(noContent)}</div>
     </div>
   }
 

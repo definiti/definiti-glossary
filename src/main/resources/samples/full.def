@@ -9,6 +9,7 @@ type SimpleAliasType = String
 type SimpleDefinedType {
   aliasString: SimpleAliasType
   string: String
+  nonEmpty: String verifying NonEmptyString
 }
 
 // Normal line comments are ignored
@@ -38,3 +39,21 @@ type EmptyDefinedType {
  * This project use [txtmark](https://github.com/rjeschke/txtmark) for markdown processing
  */
 type MarkdownType = String
+
+/**
+ * Checks the string is non empty.
+ * The non-emptiness does not ignore whitespaces.
+ */
+verification NonEmptyString {
+  "The string should not be empty"
+  (string: String) => {
+    string.nonEmpty()
+  }
+}
+
+verification NonEmptyList {
+  "The list should not be empty"
+  [A](list: List[A]) => {
+    list.nonEmpty()
+  }
+}
