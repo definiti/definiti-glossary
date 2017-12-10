@@ -4,11 +4,13 @@ organization := "io.github.definiti"
 
 name := "glossary"
 
-version := "0.2.0-snapshot"
+version := "0.2.0-SNAPSHOT"
 
 scalaVersion := "2.12.4"
 
-libraryDependencies += "io.github.definiti" %% "core" % "0.2.0-snapshot"
+resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+
+libraryDependencies += "io.github.definiti" %% "core" % "0.2.0-SNAPSHOT"
 libraryDependencies += "commons-io" % "commons-io" % "2.5"
 libraryDependencies += "com.typesafe" % "config" % "1.3.1"
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0"
