@@ -1,7 +1,7 @@
 package definiti.glossary.utils
 
 object StringUtils {
-  def lastPart(source: String, separator: Char): String = {
+  def lastPart(source: String, separator: Char = '.'): String = {
     if (source.isEmpty) {
       source
     } else if (source.last == separator) {
@@ -13,7 +13,7 @@ object StringUtils {
     }
   }
 
-  def excludeLastPart(source: String, separator: Char): String = {
+  def excludeLastPart(source: String, separator: Char = '.'): String = {
     if (source.isEmpty) {
       source
     } else if (source.last == separator) {
@@ -25,7 +25,7 @@ object StringUtils {
     }
   }
 
-  def withLastPartExtracted(source: String, separator: Char): (String, String) = {
+  def withLastPartExtracted(source: String, separator: Char = '.'): (String, String) = {
     (excludeLastPart(source, separator), lastPart(source, separator))
   }
 

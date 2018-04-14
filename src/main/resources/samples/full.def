@@ -57,3 +57,10 @@ verification NonEmptyList {
     list.nonEmpty()
   }
 }
+
+/**
+ * A day of gregorian calendar.
+ */
+enum Day {
+  Monday Tuesday Wednesday Thursday Friday Saturday Sunday
+}

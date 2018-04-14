@@ -1,6 +1,6 @@
 package definiti.glossary.generator
 
-import definiti.core.ast.{AliasType, DefinedType, Library}
+import definiti.core.ast._
 import definiti.glossary.model.{Glossary, TypeInfo, VerificationInfo}
 import definiti.glossary.utils.StringUtils
 
@@ -13,32 +13,38 @@ class GlossaryExtractor {
   }
 
   private def extractTypes(library: Library): Seq[TypeInfo] = {
-    library.types.flatMap { case (fullName, typ) => typ match {
+    library.types.flatMap {
       case aliasType: AliasType =>
         Some(TypeInfo(
-          id = fullName,
-          name = StringUtils.lastPart(aliasType.name, '.'),
+          id = aliasType.fullName,
+          name = StringUtils.lastPart(aliasType.name),
           content = aliasType.comment.map(normalizeComment)
         ))
       case definedType: DefinedType =>
         Some(TypeInfo(
-          id = fullName,
-          name = StringUtils.lastPart(definedType.name, '.'),
+          id = definedType.fullName,
+          name = StringUtils.lastPart(definedType.name),
           content = definedType.comment.map(normalizeComment)
         ))
+      case enum: Enum =>
+        Some(TypeInfo(
+          id = enum.fullName,
+          name = StringUtils.lastPart(enum.name),
+          content = enum.comment.map(normalizeComment)
+        ))
       case _ => None
-    }}.toSeq
+    }.sortWith(_.name < _.name)
   }
 
   private def extractVerifications(library: Library): Seq[VerificationInfo] = {
-    library.verifications.map { case (fullName, verification) =>
+    library.verifications.map { verification =>
       VerificationInfo(
-        id = fullName,
+        id = verification.fullName,
         name = verification.name,
-        message = verification.message,
+        message = verification.message.toString,
         content = verification.comment.map(normalizeComment)
       )
-    }.toSeq
+    }.sortWith(_.name < _.name)
   }
 
   private def normalizeComment(comment: String): String = {
