@@ -33,7 +33,7 @@ class GlossaryExtractor {
           content = enum.comment.map(normalizeComment)
         ))
       case _ => None
-    }
+    }.sortWith(_.name < _.name)
   }
 
   private def extractVerifications(library: Library): Seq[VerificationInfo] = {
@@ -44,7 +44,7 @@ class GlossaryExtractor {
         message = verification.message.toString,
         content = verification.comment.map(normalizeComment)
       )
-    }
+    }.sortWith(_.name < _.name)
   }
 
   private def normalizeComment(comment: String): String = {
