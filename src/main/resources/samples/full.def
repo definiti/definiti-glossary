@@ -52,9 +52,13 @@ verification NonEmptyString {
 }
 
 verification NonEmptyList {
-  "The list should not be empty"
+  message("non.empty.list", String)
   [A](list: List[A]) => {
-    list.nonEmpty()
+    if (list.nonEmpty()) {
+      ok
+    } else {
+      ko("Some text")
+    }
   }
 }
 

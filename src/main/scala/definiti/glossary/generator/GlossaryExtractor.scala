@@ -41,7 +41,10 @@ class GlossaryExtractor {
       VerificationInfo(
         id = verification.fullName,
         name = verification.name,
-        message = verification.message.toString,
+        message = verification.message match {
+          case literal: LiteralMessage => literal.message
+          case typed: TypedMessage => s"${typed.message}(${typed.types.map(_.readableString).mkString(", ")})"
+        },
         content = verification.comment.map(normalizeComment)
       )
     }.sortWith(_.name < _.name)
